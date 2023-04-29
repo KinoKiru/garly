@@ -1,45 +1,45 @@
 {
   "compilerOptions": {
-    "target": "ESNext",
-    "useDefineForClassFields": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "baseUrl": ".",
     "module": "ESNext",
-    "moduleResolution": "Node",
+    "target": "ESNext",
+    "lib": [
+      "DOM",
+      "DOM.Iterable",
+      "ESNext",
+      "ScriptHost"
+    ],
     "strict": true,
     "jsx": "preserve",
-    "sourceMap": true,
-    "resolveJsonModule": true,
-    "isolatedModules": true,
     "esModuleInterop": true,
-    "lib": [
-      "ESNext",
-      "DOM"
+    "incremental": false,
+    "skipLibCheck": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "noUnusedLocals": true,
+    "strictNullChecks": true,
+    "forceConsistentCasingInFileNames": true,
+    "removeComments": true,
+    "useUnknownInCatchVariables": false,
+    "types": [
+      "vite/client",
+      "vite-plugin-pages/client",
+      "vite-plugin-vue-layouts/client",
+      "@intlify/unplugin-vue-i18n/messages"
     ],
-    "skipLibCheck": true
-  },
-  "types": [
-    "vite/client",
-    "vite-plugin-pages/client",
-    "vite-plugin-vue-layouts/client",
-    "@intlify/unplugin-vue-i18n/messages"
-  ],
-  "paths": {
-    "~/*": [
-      "src/*"
-    ],
-    "@/*": [
-      "src/components/"
-    ]
-  },
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.d.ts",
-    "src/**/*.tsx",
-    "src/**/*.vue",
-    "vite.config.ts"
-  ],
-  "references": [
-    {
-      "path": "./tsconfig.node.json"
+    "paths": {
+      "~/*": [
+        "src/*"
+      ],
+      "@/*": [
+        "src/components/"
+      ]
     }
+  },
+  "exclude": [
+    "dist",
+    "node_modules"
   ]
 }

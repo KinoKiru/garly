@@ -5,7 +5,9 @@ import presetIcons from "@unocss/preset-icons";
 
 export default defineConfig({
   presets: [
-    presetWind(),
+    presetWind({
+      dark: "class"
+    }),
     presetIcons(),
     presetWebFonts({
       provider: "google",

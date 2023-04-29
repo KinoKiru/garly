@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import { defineConfig } from 'vite';
 import path from 'path';
 import UnoCSS from 'unocss/vite';
@@ -9,7 +10,7 @@ import Components from 'unplugin-vue-components/vite';
 import VueI18n from '@intlify/unplugin-vue-i18n/vite';
 
 // https://vitejs.dev/config/
-export default defineConfig(async () => ({
+export default defineConfig(() => ({
     resolve: {
         alias: {
             '~/': `${path.resolve(__dirname, 'src')}/`,
@@ -64,7 +65,7 @@ export default defineConfig(async () => ({
     envPrefix: ['VITE_', 'TAURI_'],
     build: {
     // Tauri supports es2021
-        target: process.env.TAURI_PLATFORM == 'windows' ? 'chrome105' : 'safari13',
+        target: process.env.TAURI_PLATFORM === 'windows' ? 'chrome105' : 'safari13',
         // don't minify for debug builds
         minify: !process.env.TAURI_DEBUG ? 'esbuild' : false,
         // produce sourcemaps for debug builds

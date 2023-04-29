@@ -68,3 +68,8 @@
   filter: drop-shadow(0 0 2em #249b73);
 }
 </style>
+
+<route lang="yaml">
+    meta:
+        translation_key: 'nav.home'
+</route>
