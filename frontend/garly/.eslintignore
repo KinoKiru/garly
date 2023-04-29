@@ -1,0 +1,8 @@
+dist
+public
+src/auto-imports.d.ts
+src/components.d.ts
+vite.config.ts
+postcss.config.cjs
+uno.config.ts
+.env
