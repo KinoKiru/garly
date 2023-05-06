@@ -1,0 +1,80 @@
+syntax = "proto3";
+
+package garly.v1;
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+
+// Generated according to https://cloud.google.com/apis/design/standard_methods
+service UserService {
+  // /v1/users
+  rpc ListUsers(ListUsersRequest) returns (ListUsersResponse);
+
+  // /v1/{name=users/*}
+  rpc GetUser(GetUserRequest) returns (User);
+
+  // /v1/users
+  rpc CreateUser(CreateUserRequest) returns (User);
+
+  // /v1/{user.name=users/*}
+  rpc UpdateUser(UpdateUserRequest) returns (User);
+
+  // /v1/{name=users/*}
+  rpc DeleteUser(DeleteUserRequest) returns (google.protobuf.Empty);
+}
+
+message User {
+  int32 id = 1;
+
+  string username = 2;
+
+  string email = 3;
+
+  google.protobuf.Timestamp created_at = 4;
+  google.protobuf.Timestamp updated_at = 5;
+}
+
+message ListUsersRequest {
+  // The maximum number of items to return.
+  uint32 page_size = 1;
+
+  // The next_page_token value returned from a previous List request, if any.
+  uint32 page = 2;
+}
+
+message ListUsersResponse {
+  // The field name should match the noun "user" in the method name.
+  // There will be a maximum number of items returned based on the page_size
+  // field in the request.
+  repeated User users = 1;
+
+  // Token to retrieve the next page of results, or empty if there are no more
+  // results in the list.
+  uint32 max_page = 2;
+}
+
+message GetUserRequest {
+  // refrences the users id
+  int32 id = 1;
+}
+
+message CreateUserRequest {
+  string username = 1;
+
+  string password = 2;
+
+  string email = 3;
+}
+
+message UpdateUserRequest {
+  optional string username = 1;
+
+  optional string password = 2;
+
+  optional string email = 3;
+}
+
+message DeleteUserRequest {
+  // refrences the users id
+  int32 id = 1;
+}
