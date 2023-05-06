@@ -1,0 +1,46 @@
+[package]
+name = "backend"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[workspace]
+members = [".", "entity", "migration"]
+
+[build-dependencies]
+tonic-build = "0.9"
+walkdir = "2.3.3"
+
+[target.'cfg(windows)'.build-dependencies]
+winres = "0.1.12"
+
+[dependencies]
+migration = { path = "./migration" }
+entity = { path = "./entity" }
+dotenvy = "0.15.7"
+lazy_static = "1"
+listenfd = "1.0.1"
+regex = "1"
+serde = { version = "1.0.160", features = ["derive"] }
+tracing-subscriber = "0.3.16"
+validator = { version = "0.16", features = ["derive"] }
+log = "0.4.17"
+tonic = { version = "0.9.2", features = ["gzip"] }
+tonic-reflection = "0.9.2"
+tonic-async-interceptor = "0.1.0"
+prost = "0.11.9"
+tokio = { version = "1.28.0", features = ["macros", "rt-multi-thread"] }
+tokio-stream = "0.1.14"
+log4rs = { version = "1.2.0", features = ["gzip"] }
+argon2 = "0.5.0"
+hmac = "0.12.1"
+jwt = "0.16.0"
+sha2 = "0.10.6"
+chrono = "0.4.24"
+serde_json = "1.0.96"
+futures = "0.3.28"
+futures-util = "0.3.28"
+tower = "0.4.13"
+prost-types = "0.11.9"
+tonic-web = "0.9.2"
