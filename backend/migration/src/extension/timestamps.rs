@@ -11,10 +11,12 @@ pub enum Timestamp {
 #[async_trait]
 pub trait TimestampTrait {
     async fn timestamps(&self, table_name: String) -> Result<(), DbErr>;
+    async fn remove_timestamps(&self, table_name: String) -> Result<(), DbErr>;
 }
 
 #[async_trait]
 impl<'a> TimestampTrait for SchemaManager<'a> {
+    /// Created timestamp columns and adds trigger to table
     async fn timestamps(&self, table_name: String) -> Result<(), DbErr> {
         self.alter_table(
             Table::alter()
@@ -47,5 +49,36 @@ impl<'a> TimestampTrait for SchemaManager<'a> {
             ))
             .await
             .map(|_| ())
+    }
+
+    /// Deletes Timestamp columns and removes trigger from table
+    async fn remove_timestamps(&self, table_name: String) -> Result<(), DbErr> {
+        if self
+            .has_column(&table_name, Timestamp::CreatedAt.to_string())
+            .await?
+            && self
+                .has_column(&table_name, Timestamp::UpdatedAt.to_string())
+                .await?
+        {
+            self.alter_table(
+                Table::alter()
+                    .drop_column(Timestamp::CreatedAt)
+                    .drop_column(Timestamp::UpdatedAt)
+                    .take(),
+            )
+            .await?;
+
+            self.get_connection()
+                .execute(Statement::from_string(
+                    self.get_database_backend(),
+                    format!(r#"DROP TRIGGER IF EXISTS set_{table_name}_timestamp"#),
+                ))
+                .await
+                .map(|_| ())
+        } else {
+            return Err(DbErr::Custom(
+                "Table does not contain the timestamp columns".to_string(),
+            ));
+        }
     }
 }
