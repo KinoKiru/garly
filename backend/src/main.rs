@@ -9,10 +9,9 @@ use migration::{
 use std::{env, net::SocketAddr};
 use tonic::{transport::Server, Request, Status};
 use tonic_reflection::server::Builder;
-
+mod v1;
 pub mod proto {
     tonic::include_proto!("garly.v1");
-
     pub(crate) const FILE_DESCRIPTOR_SET: &[u8] = tonic::include_file_descriptor_set!("descriptor");
 }
 
@@ -45,7 +44,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
             inject_db(req, conn.clone())
         }))
         // .layer(async_interceptor(interceptor::auth::check_auth))
-        .layer(tonic::service::interceptor(logger))
+        .layer(tonic::service::interceptor(v1::layer::logger::logger))
         // .add_service(v1::service::user::server())
         //.add_service(v1::service::user::server())
         // .add_service(service::user::server())
@@ -55,7 +54,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         // .add_service(service::reading::server())
         // .add_service(service::search::server())
         // .add_service(service::meta::server())
-        .add_service(UserServiceServer::new(UwU))
+        .add_service(UserServiceServer::new(v1::service::user::UserController))
         .add_service(
             Builder::configure()
                 .register_encoded_file_descriptor_set(proto::FILE_DESCRIPTOR_SET)
@@ -66,10 +65,6 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     Ok(())
 }
-
-struct UwU;
-
-impl proto::user_service_server::UserService for UwU {}
 
 /// Make a connection to the database and run migrations
 async fn conn_db(db_url: &str) -> Result<DatabaseConnection, DbErr> {
@@ -87,20 +82,4 @@ fn inject_db(mut req: Request<()>, conn: DatabaseConnection) -> Result<Request<(
     req.extensions_mut().insert(conn);
 
     return Ok(req);
-}
-
-/// Log the incoming request
-fn logger(req: Request<()>) -> Result<Request<()>, Status> {
-    struct User {
-        username: String,
-    }
-    let logged_in = req.extensions().get::<User>();
-
-    info!(
-        "[{}] ({})",
-        req.remote_addr().map_or(String::new(), |ip| ip.to_string()),
-        logged_in.map_or("#anon#".to_string(), |user| user.username.clone()),
-    );
-
-    Ok(req)
 }
