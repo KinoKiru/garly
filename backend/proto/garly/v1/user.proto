@@ -21,6 +21,9 @@ service UserService {
 
   // /v1/{name=users/*}
   rpc DeleteUser(DeleteUserRequest) returns (google.protobuf.Empty);
+
+  // /v1/login
+  rpc LoginUser(LoginUserRequest) returns (LoginUserResponse);
 }
 
 message User {
@@ -77,4 +80,19 @@ message UpdateUserRequest {
 message DeleteUserRequest {
   // refrences the users id
   int32 id = 1;
+}
+
+message LoginUserRequest {
+  oneof login_identifier {
+    string username = 1;
+
+    string email = 3;
+  }
+
+  string password = 2;
+}
+
+message LoginUserResponse {
+  string token = 1;
+  User user = 2;
 }

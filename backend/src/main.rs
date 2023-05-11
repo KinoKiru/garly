@@ -80,6 +80,5 @@ async fn conn_db(db_url: &str) -> Result<DatabaseConnection, DbErr> {
 /// Add the database to all requests via their extensions
 fn inject_db(mut req: Request<()>, conn: DatabaseConnection) -> Result<Request<()>, Status> {
     req.extensions_mut().insert(conn);
-
     return Ok(req);
 }
