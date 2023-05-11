@@ -70,11 +70,13 @@ message CreateUserRequest {
 }
 
 message UpdateUserRequest {
-  optional string username = 1;
+  uint32 id = 1;
 
-  optional string password = 2;
+  optional string username = 2;
 
-  optional string email = 3;
+  optional string password = 3;
+
+  optional string email = 4;
 }
 
 message DeleteUserRequest {
