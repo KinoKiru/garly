@@ -1,3 +1,5 @@
+use tonic::{Request, Status};
+
 /// Log the incoming request
 pub fn logger(req: Request<()>) -> Result<Request<()>, Status> {
     struct User {

@@ -87,7 +87,7 @@ message DeleteUserRequest {
 message LoginUserRequest {
   oneof login_identifier {
     string username = 1;
-
+    
     string email = 3;
   }
 

@@ -1,7 +1,7 @@
 #[macro_use]
 extern crate log;
 
-use crate::proto::user_service_server::UserServiceServer;
+use crate::{proto::user_service_server::UserServiceServer, v1::service::user::UserController};
 use migration::{
     sea_orm::{Database, DatabaseConnection},
     DbErr, Migrator, MigratorTrait,
@@ -54,7 +54,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         // .add_service(service::reading::server())
         // .add_service(service::search::server())
         // .add_service(service::meta::server())
-        .add_service(UserServiceServer::new(v1::service::user::UserController))
+        .add_service(UserServiceServer::new(UserController::default()))
         .add_service(
             Builder::configure()
                 .register_encoded_file_descriptor_set(proto::FILE_DESCRIPTOR_SET)

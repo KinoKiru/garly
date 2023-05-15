@@ -310,6 +310,7 @@ dependencies = [
  "prost",
  "prost-types",
  "regex",
+ "sea-orm-migration",
  "serde",
  "serde_json",
  "sha2",

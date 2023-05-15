@@ -1,13 +1,19 @@
-use crate::proto;
-use tonic::{Request, Status};
+use crate::{
+    proto::{user_service_server::UserService, *},
+    v1::extention::req_db::GetDatabaseFromRequest,
+};
+use tonic::{Request, Response, Status};
 
 #[derive(Debug, Default)]
 pub struct UserController {}
 
 #[tonic::async_trait]
-impl proto::user_service_server::UserService for UserController {
+impl UserService for UserController {
     /// List all users
-    async fn list_users(&self, req: Request<ListUserRequest>) -> Result<ListUserResponse, Status> {
+    async fn list_users(
+        &self,
+        req: Request<ListUsersRequest>,
+    ) -> Result<Response<ListUsersResponse>, Status> {
         todo!()
     }
 
@@ -35,7 +41,15 @@ impl proto::user_service_server::UserService for UserController {
     async fn login_user(
         &self,
         req: Request<LoginUserRequest>,
-    ) -> Result<LoginUserResponse, Status> {
+    ) -> Result<Response<LoginUserResponse>, Status> {
+        let _db = req.get_db();
+        let req = req.get_ref();
+
+        match &req.login_identifier {
+            Some(x) => println!("{:?}", x),
+            None => println!("lmao how dis happen"),
+        }
+
         todo!()
     }
 }
